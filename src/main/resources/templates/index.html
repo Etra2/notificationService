@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/style.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification Service</title>
+</head>
+<body>
+<h1>Notification Service</h1>
+
+<div>
+    <h2>Send Alert</h2>
+    <input type="text" id="alertInput" placeholder="Type alert here">
+    <button onclick="sendAlert()">Send Alert</button>
+</div>
+
+<div>
+    <h2>Send Message</h2>
+    <input type="text" id="messageInput" placeholder="Type message here">
+    <button onclick="sendMessage()">Send Message</button>
+</div>
+
+<div>
+    <h2>Logs</h2>
+    <pre id="logs" th:text="${logs}" style="background:#f0f0f0; padding:10px; height:200px; overflow:auto;"></pre>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
