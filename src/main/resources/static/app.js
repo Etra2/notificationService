@@ -1,33 +1,47 @@
-// Pobranie elementu logów
 const logs = document.getElementById("logs");
 
-// Funkcja dodająca nowy wpis do logów
-function appendLog(text, type) {
+// Dodawanie wpisów do logów
+function appendLog(text, type, priority = '') {
     const logLine = document.createElement("div");
-    logLine.textContent = text;
+    logLine.textContent = priority ? `[${priority}] ${text}` : text;
 
-    // Dodanie klasy CSS w zależności od typu
-    if (type === "alert") logLine.classList.add("alert-log");
-    if (type === "message") logLine.classList.add("message-log");
+    if(type === "ALERT") logLine.classList.add("alert-log");
+    if(type === "MESSAGE") logLine.classList.add("message-log");
 
     logs.appendChild(logLine);
-    logs.scrollTop = logs.scrollHeight; // przewijanie do dołu
+    logs.scrollTop = logs.scrollHeight;
 }
 
-// Wysłanie alertu do backendu
+// Wysyłanie alertu (AlertController)
 function sendAlert() {
-    const msg = document.getElementById("alertInput").value;
-    fetch(`/api/alert/sendAlert?msg=${encodeURIComponent(msg)}`, { method: "POST" })
+    const content = document.getElementById("alertContent").value;
+
+    fetch(`/api/alert/sendAlert?msg=${encodeURIComponent(content)}`, { method: "POST" })
         .then(response => response.text())
-        .then(data => appendLog(data, "alert"))
+        .then(data => appendLog(data, "ALERT"))
         .catch(err => appendLog("Error: " + err));
 }
 
-// Wysłanie message do backendu
+// Wysyłanie wiadomości (MessageController)
 function sendMessage() {
-    const msg = document.getElementById("messageInput").value;
-    fetch(`/api/alert/sendMessage?msg=${encodeURIComponent(msg)}`, { method: "POST" })
+    const content = document.getElementById("messageContent").value;
+    const priority = document.getElementById("messagePrioritySelect").value;
+
+    const requestBody = {
+        content: content,
+        type: "MESSAGE",        // typ dla MessageController jest zawsze MESSAGE
+        priority: priority
+    };
+
+    fetch(`/api/message`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+    })
         .then(response => response.text())
-        .then(data => appendLog(data, "message"))
+        .then(data => {
+            // Wyświetlamy treść wiadomości w logach razem z priorytetem
+            appendLog(`${content} | ${data}`, "MESSAGE", priority);
+        })
         .catch(err => appendLog("Error: " + err));
 }

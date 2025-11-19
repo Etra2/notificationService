@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="/style.css">
 <head>
     <meta charset="UTF-8">
     <title>Notification Service</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <h1>Notification Service</h1>
 
+<!-- Sekcja Alertów -->
 <div>
     <h2>Send Alert</h2>
-    <input type="text" id="alertInput" placeholder="Type alert here">
+    <input type="text" id="alertContent" placeholder="Type alert here">
     <button onclick="sendAlert()">Send Alert</button>
 </div>
 
+<!-- Sekcja Messages -->
 <div>
     <h2>Send Message</h2>
-    <input type="text" id="messageInput" placeholder="Type message here">
+    <input type="text" id="messageContent" placeholder="Type message here">
+
+    <!-- Priorytet wiadomości -->
+    <label for="messagePrioritySelect">Priority:</label>
+    <select id="messagePrioritySelect">
+        <option value="HIGH">HIGH</option>
+        <option value="LOW" selected>LOW</option>
+    </select>
+
     <button onclick="sendMessage()">Send Message</button>
 </div>
 
+<!-- Logi -->
 <div>
     <h2>Logs</h2>
-    <pre id="logs" th:text="${logs}" style="background:#f0f0f0; padding:10px; height:200px; overflow:auto;"></pre>
+    <pre id="logs"></pre>
 </div>
 
 <script src="/app.js"></script>
